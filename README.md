@@ -7,6 +7,7 @@ Aqui está um skeleton com um pequeno tutorial step by step para criar um monore
 - web em next js
 
 # Índice
+- [Introdução](#introdução)
 - [1. Instalação do Turborepo e Inicialização do Projeto](#instalacao)
 - [2. Estrutura do Projeto](#estrutura)
 - [3. Configuração do Turborepo](#configuração)
@@ -26,6 +27,28 @@ Anexos
 - [Fontes](#sources)
 - [turborepo templates](#templates)
   
+## Introdução
+### O que é um monorepo?
+Um monorepo (abreviação de "monolithic repository") é uma abordagem de gerenciamento de código-fonte onde múltiplos projetos, que podem ser relacionados ou independentes, são armazenados em um único repositório de controle de versão. Em vez de ter repositórios separados para cada projeto, todos os projetos são mantidos juntos em um único repositório.
+
+### Vantagens de um Monorepo
+**- Consistência:** Facilita a aplicação de padrões de codificação e ferramentas de desenvolvimento consistentes em todos os projetos.
+**- Reutilização de Código:** Facilita a reutilização de código entre diferentes projetos, pois todos os projetos compartilham o mesmo repositório.
+Gerenciamento de Dependências: Simplifica o gerenciamento de dependências, pois todas as dependências podem ser gerenciadas centralmente.
+**- Colaboração:** Facilita a colaboração entre equipes, pois todos os projetos estão no mesmo repositório, permitindo uma visão unificada do código.
+**- Sincronização de Alterações:** Facilita a sincronização de alterações entre diferentes projetos, pois todas as alterações são feitas no mesmo repositório.
+### Desvantagens de um Monorepo
+**- Escalabilidade:** Pode ser difícil de escalar para repositórios muito grandes, pois o tamanho do repositório pode crescer rapidamente.
+**- Complexidade de Build:** Pode ser mais complexo configurar e gerenciar o processo de build, especialmente se os projetos tiverem diferentes requisitos de build.
+**-Gerenciamento de Permissões:** Pode ser mais difícil gerenciar permissões de acesso, pois todos os projetos estão no mesmo repositório.
+## Ferramentas para Monorepos
+Existem várias ferramentas que ajudam a gerenciar monorepos, como:
+
+- [turborepo](https://turbo.build/repo/docs): Uma ferramenta de build de alto desempenho para monorepos JavaScript e TypeScript.
+- [Lerna](https://lerna.js.org/docs/getting-started): Uma ferramenta popular para gerenciar monorepos JavaScript.
+- [Nx](https://nx.dev/getting-started/intro): Um conjunto de ferramentas extensível para monorepos JavaScript e TypeScript.
+- [NPM Workspaces](https://docs.npmjs.com/cli/v8/using-npm/workspaces)
+
 [def]: #instalacao
 ### 1. **Instalação do Turborepo e Inicialização do Projeto**
 
@@ -763,6 +786,138 @@ next js
 npm
 yarn
 versel
+
+
+
+## Configurar o Prettier e ESLint
+### Instalar as dependências
+<pre>
+npm install --save-dev eslint eslint-config-prettier eslint-plugin-react prettier
+</pre>
+
+#### Configurar o Prettier 
+Crie um arquivo de configuração do Prettier na raiz do seu monorepo. O arquivo pode ser .prettierrc ou prettier.config.js. Aqui está um exemplo de .prettierrc:
+<pre>
+{
+  "singleQuote": true,
+  "semi": false,
+  "printWidth": 200,
+  "proseWrap": "never",
+  "endOfLine": "lf",
+  "bracketSpacing": true,
+  "jsxBracketSameLine": false
+}
+</pre>
+
+#### Configurar o ESLint 
+Crie um arquivo de configuração do ESLint na raiz do seu projeto. O arquivo pode ser .eslintrc.json, .eslintrc.js, ou .eslintrc.yml. Aqui está um exemplo de .eslintrc.json:
+<pre>
+{
+  "env": {
+    "browser": true,
+    "es2021": true,
+    "node": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:@typescript-eslint/recommended",
+    "prettier"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": 12,
+    "sourceType": "module"
+  },
+  "plugins": [
+    "react",
+    "@typescript-eslint"
+  ],
+  "rules": {
+    "semi": ["error", "never"],
+    "quotes": ["error", "single"]
+  }
+}
+</pre>
+
+### Passo 11: Configurações adicionais
+podemos criar na raíz do projeto uma pasta de nome .vscode e dentro dessa pasta, uma arquivo de nome settings.json:
+<pre>
+{
+  "workbench.colorCustomizations": {
+    "statusBar.background": "#d10505",
+    "statusBar.debuggingBackground": "#d10505",
+    "statusBar.noFolderBackground": "#d10505",
+    "statussBar.prominentBackground": "#d10505"
+  },
+  "editor.formatOnSave": true,
+  "prettier.singleQuote": true,
+  "prettier.semi": false,
+  "prettier.printWidth": 200,
+  "prettier.proseWrap": "never",
+  "prettier.endOfLine": "lf",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "eslint.validate": ["javascript", "javascriptreact"]
+}
+</pre>
+
+package.json (na raiz do turborepo)
+<pre>
+{
+  "name": "monorepo",
+  "private": true,
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "devDependencies": {
+    "eslint": "^8.57.1",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-react": "^7.37.1",
+    "prettier": "^3.3.3",
+    "turbo": "^2.2.0"
+  },
+  "scripts": {
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "lint": "eslint . --ext .js,.jsx",
+    "lint:fix": "eslint . --ext .js,.jsx --fix"
+  }
+}
+</pre>
+
+### Passo 12: .env
+Configurar o .env para o turborepo
+
+
+
+[def]: #conclusão
+### Conclusão
+Você configurou com sucesso um monorepo usando Turbo Repo com múltiplos projetos e pacotes compartilhados. Cada projeto pode ser desenvolvido e construído independentemente, mas ainda compartilha código e dependências comuns.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 [def]: #templates
 ## turborepo templates
